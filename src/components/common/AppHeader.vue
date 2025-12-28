@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import logo from '../../assets/svg/logo.svg'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { Collapse } from 'bootstrap'
+import { useCartStore } from '../../stores/cart'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const cartStore = useCartStore()
 const searchQuery = ref('')
 const searchInput = ref<HTMLInputElement | null>(null)
 const isSearchFocused = ref(false)
+const menuEl = ref<HTMLElement | null>(null)
+const isMenuOpen = ref(false)
 
 const handleSearchFocus = () => {
   isSearchFocused.value = true
@@ -15,12 +21,22 @@ const handleSearchBlur = () => {
   isSearchFocused.value = false
 }
 
-const menuEl = ref<HTMLElement | null>(null)
-
 const closeMobileMenu = () => {
   if (!menuEl.value) return
-  const instance = Collapse.getOrCreateInstance(menuEl.value)
+  const instance = Collapse.getInstance(menuEl.value) || new Collapse(menuEl.value, { toggle: false })
   instance.hide()
+  isMenuOpen.value = false
+}
+
+const toggleMenu = () => {
+  if (!menuEl.value) return
+  const instance = Collapse.getOrCreateInstance(menuEl.value, { toggle: false })
+  if (isMenuOpen.value) {
+    instance.hide()
+  } else {
+    instance.show()
+  }
+  isMenuOpen.value = !isMenuOpen.value
 }
 
 const performSearch = () => {
@@ -30,7 +46,8 @@ const performSearch = () => {
 }
 
 const navigateTo = (page: string) => {
-  console.log('Navigate to:', page)
+  closeMobileMenu()
+  router.push(`/${page}`)
 }
 
 onMounted(() => {
@@ -39,12 +56,22 @@ onMounted(() => {
   
   menuEl.value = element
   
-  element.addEventListener('shown.bs.collapse', () => {
+  const handleShown = () => {
     document.body.style.overflow = 'hidden'
-  })
-
-  element.addEventListener('hidden.bs.collapse', () => {
+    isMenuOpen.value = true
+  }
+  
+  const handleHidden = () => {
     document.body.style.overflow = ''
+    isMenuOpen.value = false
+  }
+  
+  element.addEventListener('shown.bs.collapse', handleShown)
+  element.addEventListener('hidden.bs.collapse', handleHidden)
+  
+  onBeforeUnmount(() => {
+    element.removeEventListener('shown.bs.collapse', handleShown)
+    element.removeEventListener('hidden.bs.collapse', handleHidden)
   })
 })
 
@@ -67,14 +94,13 @@ onBeforeUnmount(() => {
         <button
           class="navbar-toggler border-0"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNavbar"
+          @click="toggleMenu"
           aria-controls="mainNavbar"
-          :aria-expanded="menuEl?.value?.classList.contains('show') ? 'true' : 'false'"
+          :aria-expanded="isMenuOpen ? 'true' : 'false'"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon" :class="{ 'd-none': menuEl?.value?.classList?.contains('show') }"></span>
-          <span class="btn-close" :class="{ 'd-none': !menuEl?.value?.classList?.contains('show') }"></span>
+          <span class="navbar-toggler-icon" :class="{ 'd-none': isMenuOpen }"></span>
+          <span class="btn-close" :class="{ 'd-none': !isMenuOpen }"></span>
         </button>
 
         <!-- Collapsible Menu -->
@@ -126,8 +152,8 @@ onBeforeUnmount(() => {
               </button>
               <button class="icon-button p-0 position-relative" @click="navigateTo('cart')">
                 <i class="bi bi-cart3"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  3
+                <span v-if="cartStore.totalItems > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ cartStore.totalItems }}
                   <span class="visually-hidden">items in cart</span>
                 </span>
               </button>
@@ -182,8 +208,8 @@ onBeforeUnmount(() => {
               </button>
               <button class="icon-button p-0 position-relative" @click="navigateTo('cart')">
                 <i class="bi bi-cart3"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  3
+                <span v-if="cartStore.totalItems > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ cartStore.totalItems }}
                   <span class="visually-hidden">items in cart</span>
                 </span>
               </button>

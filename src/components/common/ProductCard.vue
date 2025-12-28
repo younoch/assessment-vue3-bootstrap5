@@ -33,7 +33,7 @@
         <div class="card-price mb-1 text-black fw-bold">{{ price }}</div>
         <button 
           class="btn cart-button w-100 fw-bold rounded-pill"
-          @click="$emit('add-to-cart')"
+          @click="handleAddToCart"
         >
           <i class="fas fa-shopping-cart me-1"></i> Add to Cart
         </button>
@@ -73,9 +73,25 @@ const props = defineProps({
   },
 });
 
+interface Product {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+}
+
 const emit = defineEmits<{
-  (e: 'add-to-cart'): void
+  (e: 'add-to-cart', product: Product): void
 }>();
+
+const handleAddToCart = () => {
+  emit('add-to-cart', {
+    id: props.title.toLowerCase().replace(/\s+/g, '-'),
+    title: props.title,
+    price: parseFloat(props.price.replace(/[^0-9.-]+/g, '')),
+    image: props.images[0]?.url || ''
+  });
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useCartStore } from '../stores/cart';
 import RippleButton from "../components/home/RippleButton.vue";
 import FeaturePopover from "../components/home/FeaturePopover.vue";
 import BootstrapCarousel from "../components/common/BootstrapCarousel.vue";
@@ -52,9 +53,15 @@ onMounted(() => {
   }, 1000);
 });
 
-const addToCart = () => {
-  console.log('Product added to cart');
-  // Add your add to cart logic here
+const cartStore = useCartStore();
+
+const addToCart = (product: { id: string; title: string; price: number; image: string }) => {
+  cartStore.addItem({
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    image: product.image
+  });
 };
 </script>
 
