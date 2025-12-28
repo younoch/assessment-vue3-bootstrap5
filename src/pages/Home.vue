@@ -109,7 +109,7 @@ const addToCart = () => {
                 <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.4);"></div>
             </div>
             <!-- Top Left -->
-            <div class="position-absolute" style="top: 25%; left: 25%;">
+            <div class="position-absolute" style="top: 30%; left: 45%;">
                 <FeaturePopover placement="left">
                     <template #trigger>
                         <RippleButton 
@@ -134,13 +134,14 @@ const addToCart = () => {
             </div>
 
             <!-- Bottom Left -->
-            <div class="position-absolute" style="bottom: 20%; left: 15%;">
+            <div class="position-absolute" style="bottom: 10%; left: 20%;">
                 <FeaturePopover placement="top">
                     <template #trigger>
                         <RippleButton 
                             :delay="300"
                             placement="right"
                         />
+                        
                     </template>
                     <template #content>
                         <ProductCard
@@ -158,13 +159,14 @@ const addToCart = () => {
             </div>
 
             <!-- Top Right -->
-            <div class="position-absolute" style="top: 15%; right: 15%;">
-                <FeaturePopover placement="left">
+            <div class="position-absolute" style="bottom: 30%; right: 35%;">
+                <FeaturePopover placement="top">
                     <template #trigger>
                         <RippleButton 
                             :delay="600"
                             placement="left"
                         />
+                    
                     </template>
                     <template #content>
                         <ProductCard
@@ -183,13 +185,14 @@ const addToCart = () => {
             </div>
 
             <!-- Bottom Right -->
-            <div class="position-absolute" style="bottom: 20%; right: 15%;">
+            <div class="position-absolute" style="bottom: 1%; right: 15%;">
                 <FeaturePopover placement="top">
                     <template #trigger>
                         <RippleButton 
                             :delay="900"
                             placement="top"
                         />
+                        
                     </template>
                     <template #content>
                         <ProductCard

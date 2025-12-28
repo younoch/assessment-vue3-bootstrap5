@@ -17,9 +17,9 @@
             <div class="ratio ratio-1x1">
               <img 
                 :src="slide.image" 
-                class="d-block w-100 h-100"
+                class="img-fluid rounded-circle w-100 h-100"
                 :alt="slide.alt"
-                style="object-fit: contain; object-position: center;"
+                style="object-fit: cover;"
               />
             </div>
           </div>
@@ -32,7 +32,7 @@
       <div class="">
         <div class="card-price mb-1 text-black fw-bold">{{ price }}</div>
         <button 
-          class="btn cart-button w-100 fw-bold"
+          class="btn cart-button w-100 fw-bold rounded-pill"
           @click="$emit('add-to-cart')"
         >
           <i class="fas fa-shopping-cart me-1"></i> Add to Cart
@@ -88,11 +88,11 @@ const emit = defineEmits<{
   max-width: 100%;
   
   @media (min-width: 1440px) {
-    min-width: 380px;
+    min-width: 326px;
   }
   
   @media (max-width: 1439.98px) {
-    min-width: 300px;
+    min-width: 280px;
   }
   
   @media (max-width: 767.98px) {

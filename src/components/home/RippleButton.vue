@@ -90,51 +90,59 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 @keyframes ripple {
   0% {
-    width: 16px;
-    height: 16px;
+    width: var(--dot-size);
+    height: var(--dot-size);
     opacity: 0.3;
     border-width: 1px;
   }
+
   70% {
-    width: 80px;
-    height: 80px;
+    width: var(--pulse-size);
+    height: var(--pulse-size);
     opacity: 1;
     border-width: 1px;
   }
+
   100% {
-    width: 80px;
-    height: 80px;
+    width: var(--pulse-size);
+    height: var(--pulse-size);
     opacity: 0.1;
     border-width: 1px;
   }
 }
 
 .pulse-container {
+  --pulse-size: 80px;
+  --dot-size: 16px;
+
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: var(--pulse-size);
+  height: var(--pulse-size);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .pulse-button {
-  width: 80px;
-  height: 80px;
+  width: var(--pulse-size);
+  height: var(--pulse-size);
   border-radius: 50%;
   position: relative;
   z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: transparent;
   border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .pulse-dot {
-  width: 16px;
-  height: 16px;
-  background-color: #F2C94C;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  background-color: #f2c94c;
   border-radius: 50%;
   position: relative;
   z-index: 4;
@@ -145,14 +153,30 @@ onBeforeUnmount(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 16px;
-  height: 16px;
+
+  width: var(--dot-size);
+  height: var(--dot-size);
   border-radius: 50%;
-  border: 1px solid #F2C94C;
-  background: #F2C94C33;
+  border: 1px solid #f2c94c;
+  background-color: rgba(242, 201, 76, 0.2);
   box-sizing: border-box;
+
   animation: ripple 1.5s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-  animation-delay: var(--delay, 0ms); /* 👈 use the delay here */
+  animation-delay: var(--delay, 0ms);
   pointer-events: none;
+}
+
+@media (max-width: 575px) {
+  .pulse-container {
+    --pulse-size: 48px;
+    --dot-size: 10px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+  .pulse-container {
+    --pulse-size: 64px;
+    --dot-size: 14px;
+  }
 }
 </style>
