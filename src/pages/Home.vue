@@ -3,8 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useCartStore } from '../stores/cart';
 import RippleButton from "../components/home/RippleButton.vue";
 import FeaturePopover from "../components/home/FeaturePopover.vue";
-import BootstrapCarousel from "../components/common/BootstrapCarousel.vue";
 import ProductCard from "../components/home/ProductCard.vue";
+import HeroCarousel from "../components/home/HeroCarousel.vue";
 
 // Directly import the images
 import heroBg1 from '../assets/images/hero-bg-1.jpg';
@@ -72,34 +72,16 @@ const addToCart = (product: { id: string; title: string; price: number; image: s
             aria-label="Hero carousel"
         >
 
-            <!-- Carousel -->
-            <div class="position-absolute w-100">
-                <BootstrapCarousel 
-                    :slides="slides" 
-                    :interval="2500"
-                    :show-indicators="true"
-                    :show-controls="false"
-                    carousel-id="heroCarousel"
-                    style="height: 100%;"
-                    aria-label="Image carousel"
-                >
-                    <template #default="{ slide, activeSlide, index }">
-                        <div class="carousel-item h-100" :class="{ active: activeSlide === index }" :aria-hidden="activeSlide !== index">
-                            <img 
-                                :src="slide.image" 
-                                class="d-block w-100 h-100" 
-                                :alt="slide.alt"
-                                :aria-label="slide.alt"
-                                style="object-fit: cover;"
-                                @load="onImageLoad"
-                                @error="onImageError"
-                                loading="lazy"
-                            />
-                        </div>
-                    </template>
-                </BootstrapCarousel>
-                <div class="position-absolute top-0 start-0 w-100" style="background: rgba(0, 0, 0, 0.4);"></div>
-            </div>
+            <!-- Hero Carousel Component -->
+            <HeroCarousel 
+                :slides="slides"
+                :interval="2500"
+                :show-indicators="true"
+                :show-controls="false"
+                carousel-id="heroCarousel"
+                @image-load="onImageLoad"
+                @image-error="onImageError"
+            />
             <!-- Top Left - Desktop -->
             <div class="position-absolute d-none d-md-block" style="top: 30%; left: 45%;">
                 <FeaturePopover placement="left">
@@ -304,24 +286,6 @@ const addToCart = (product: { id: string; title: string; price: number; image: s
   .hero-section {
     min-height: calc(100vh - 64px);
     padding: 0;
-  }
-}
-
-/* Ensure carousel takes full width and height */
-.hero-section :deep(.carousel) {
-  width: 100%;
-  height: 100%;
-}
-
-/* Adjust carousel item height for mobile */
-.hero-section :deep(.carousel-item) {
-  min-height: 400px;
-}
-
-/* Adjust carousel item height for desktop */
-@media (min-width: 768px) {
-  .hero-section :deep(.carousel-item) {
-    min-height: calc(100vh - 64px);
   }
 }
 </style>

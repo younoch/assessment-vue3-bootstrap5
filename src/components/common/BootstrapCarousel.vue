@@ -29,7 +29,6 @@
           :src="slide.image"
           class="d-block w-100"
           :alt="slide.alt || `Slide ${i + 1}`"
-          style="height: auto;"
         />
         <div v-if="slide.title || slide.text" class="carousel-caption d-none d-md-block">
           <h5 v-if="slide.title">{{ slide.title }}</h5>
@@ -82,7 +81,7 @@
 }
 
 .carousel-item img {
-  width: 100%;
+  width: auto;
   height: 100%;
   object-fit: cover;
   object-position: center;
