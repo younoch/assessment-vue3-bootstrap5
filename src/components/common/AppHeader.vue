@@ -137,7 +137,7 @@ onBeforeUnmount(() => {
                 v-model="searchQuery"
                 type="search"
                 class="form-control search-input w-100"
-                placeholder="Search products..."
+                placeholder="What are your looking for?"
                 @keyup.enter="performSearch"
               >
             </div>
@@ -151,7 +151,7 @@ onBeforeUnmount(() => {
                 <i class="bi bi-person"></i>
               </button>
               <button class="icon-button p-0 position-relative" @click="navigateTo('cart')">
-                <i class="bi bi-cart3"></i>
+                <i class="bi bi-bag"></i>
                 <span v-if="cartStore.totalItems > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {{ cartStore.totalItems }}
                   <span class="visually-hidden">items in cart</span>
@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
                 v-model="searchQuery"
                 type="search"
                 class="form-control search-input w-100"
-                placeholder="Search products..."
+                placeholder="What are your looking for?"
                 @keyup.enter="performSearch"
                 @focus="handleSearchFocus"
                 @blur="handleSearchBlur"
@@ -199,15 +199,15 @@ onBeforeUnmount(() => {
             </div>
 
             <!-- Desktop Icons -->
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-4 ms-3">
               <button class="icon-button p-0" @click="navigateTo('camera')">
-                <i class="bi bi-camera"></i>
+                <i class="bi bi-camera fs-5"></i>
               </button>
               <button class="icon-button p-0" @click="navigateTo('profile')">
-                <i class="bi bi-person"></i>
+                <i class="bi bi-person fs-5"></i>
               </button>
               <button class="icon-button p-0 position-relative" @click="navigateTo('cart')">
-                <i class="bi bi-cart3"></i>
+                <i class="bi bi-bag fs-5"></i>
                 <span v-if="cartStore.totalItems > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {{ cartStore.totalItems }}
                   <span class="visually-hidden">items in cart</span>
@@ -288,6 +288,28 @@ onBeforeUnmount(() => {
 
   .mobile-bottom .icon-button i {
     font-size: 1.5rem;
+  }
+  
+  /* Ensure cart icon is visible */
+  .icon-button {
+    background: none;
+    border: none;
+    color: #6c757d;
+    font-size: 1.25rem;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    
+    &:hover {
+      color: #0d6efd;
+    }
+    
+    i {
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      line-height: 1;
+    }
   }
 }
 

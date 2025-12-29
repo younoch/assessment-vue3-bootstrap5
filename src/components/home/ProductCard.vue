@@ -1,40 +1,35 @@
 <template>
   <div class="product-card h-100 p-2 rounded-3 bg-white">
-    <div class="position-relative" style="height: 200px; overflow: hidden; background-color: #f8f9fa;">
-      <BootstrapCarousel
-        :slides="images.map(img => ({
-          image: img.url,
-          alt: img.alt || title
-        }))"
-        :show-indicators="images.length > 1"
-        :show-controls="images.length > 1"
-        :interval="images.length > 1 ? 3000 : 0"
-        carousel-id="product-carousel"
-        style="height: 100%;"
-      >
-        <template #default="{ slide, activeSlide, index }">
-          <div class="carousel-item h-100 position-relative" :class="{ active: activeSlide === index }">
-            <div class="ratio ratio-1x1">
-              <img 
-                :src="slide.image" 
-                class="img-fluid rounded-circle w-100 h-100"
-                :alt="slide.alt"
-                style="object-fit: cover;"
-              />
-            </div>
-          </div>
-        </template>
-      </BootstrapCarousel>
-    </div>
+    <div class="position-relative">
+  <BootstrapCarousel
+    :slides="images.map(img => ({ image: img.url, alt: img.alt || title }))"
+    :show-indicators="images.length > 1"
+    :show-controls="images.length > 1"
+    :interval="images.length > 1 ? 3000 : 0"
+    carousel-id="product-carousel"
+    style="height: 250px;"
+  >
+    <template #default="{ slide, activeSlide, index }">
+      <div class="carousel-item" :class="{ active: activeSlide === index }">
+        <div class="slide-inner d-flex align-items-center justify-content-center">
+          <img
+            :src="slide.image"
+            :alt="slide.alt"
+            class="carousel-img"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </template>
+  </BootstrapCarousel>
+</div>
+
     <div class="d-flex flex-column">
-      <h5 class="card-title fw-semibold text-uppercase text-black">{{ title }}</h5>
+      <h5 class="card-title fw-semibold text-uppercase text-black pt-1">{{ title }}</h5>
       <p class="card-text my-1 flex-grow-1 text-muted">{{ description }}</p>
       <div class="">
         <div class="card-price mb-1 text-black fw-bold">{{ price }}</div>
-        <button 
-          class="btn cart-button w-100 fw-bold rounded-pill"
-          @click="handleAddToCart"
-        >
+        <button class="btn cart-button w-100 fw-bold rounded-pill" @click="handleAddToCart">
           <i class="fas fa-shopping-cart me-1"></i> Add to Cart
         </button>
       </div>
@@ -43,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import BootstrapCarousel from './BootstrapCarousel.vue';
+import BootstrapCarousel from '../common/BootstrapCarousel.vue';
 
 const props = defineProps({
   title: {
@@ -63,10 +58,10 @@ const props = defineProps({
     required: true,
     default: () => [],
     validator: (value: any[]) => {
-      return value.every(item => 
-        typeof item === 'object' && 
-        item !== null && 
-        'url' in item && 
+      return value.every(item =>
+        typeof item === 'object' &&
+        item !== null &&
+        'url' in item &&
         typeof item.url === 'string'
       );
     }
@@ -84,7 +79,8 @@ const emit = defineEmits<{
   (e: 'add-to-cart', product: Product): void
 }>();
 
-const handleAddToCart = () => {
+const handleAddToCart = (event: Event) => {
+  event.stopPropagation(); // Prevent event from bubbling up to parent components
   emit('add-to-cart', {
     id: props.title.toLowerCase().replace(/\s+/g, '-'),
     title: props.title,
@@ -102,15 +98,15 @@ const handleAddToCart = () => {
   overflow: hidden;
   width: 100%;
   max-width: 100%;
-  
+
   @media (min-width: 1440px) {
     min-width: 326px;
   }
-  
+
   @media (max-width: 1439.98px) {
     min-width: 280px;
   }
-  
+
   @media (max-width: 767.98px) {
     min-width: 0;
     width: 100%;
@@ -152,6 +148,7 @@ const handleAddToCart = () => {
   font-size: 14px;
   font-weight: bold;
 }
+
 .badge {
   font-size: 0.75rem;
   padding: 0.35em 0.65em;
@@ -161,6 +158,15 @@ const handleAddToCart = () => {
   background-color: #2359A5;
   border-color: #2359A5;
   color: white;
+
+  &:hover,
+  &:active,
+  &:focus {
+    background-color: #2359A5 !important;
+    border-color: #2359A5 !important;
+    color: white !important;
+    box-shadow: none !important;
+  }
 }
 
 .btn-light {
